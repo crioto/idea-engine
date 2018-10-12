@@ -1,0 +1,17 @@
+#!/bin/bash
+
+assets_dir=assets
+fonts_dir=$assets_dir/fonts
+
+# Assets
+if [ ! -d "$fonts_dir" ]; then
+    mkdir -p $fonts_dir
+    curl -fsSL https://www.iamcal.com/misc/fonts/track.php?id=1 -o pixel-six.zip
+    unzip pixel-six.zip
+    mv pixel*.ttf $fonts_dir/pixelsix.ttf
+    rm -f pixel-six.zip
+fi
+
+output_file=config.make
+
+echo "# ${output_file} generate by configure script" > $output_file

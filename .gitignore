@@ -1,0 +1,16 @@
+*.swp
+*.swo
+bin/*
+.vscode
+config.make
+assets/*
+.DS_Store
+build
+win/Debug
+win/Release
+win.vcxproj.filters
+win.vcxproj.user
+win/.vs
+win/x64
+win/x86
+.vs
