@@ -6,6 +6,10 @@ fonts_dir=$assets_dir/fonts
 # Assets
 if [ ! -d "$fonts_dir" ]; then
     mkdir -p $fonts_dir
+fi
+
+if [ ! -f "$fonts_dir/pixelsix.ttf" ]; then
+    echo "Installing Pixel Six font"
     curl -fsSL https://www.iamcal.com/misc/fonts/track.php?id=1 -o pixel-six.zip
     unzip pixel-six.zip
     mv pixel*.ttf $fonts_dir/pixelsix.ttf

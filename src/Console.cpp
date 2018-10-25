@@ -13,7 +13,7 @@ Console::Console(SDL_Renderer* renderer)
     _rect->y = 0;
 
 
-    _font = TTF_OpenFont("../assets/fonts/pixelart.ttf", 16);
+    _font = TTF_OpenFont("../assets/fonts/pixelsix.ttf", 16);
     if (_font == NULL) {
         std::cout << "Failed to load font: " << TTF_GetError() << std::endl;
     }
@@ -90,7 +90,6 @@ void Console::Render()
     if (!_isActive) return;
     if (_font == NULL) return;
     if (_inputTexture == NULL) return;
-
 
     SDL_SetRenderDrawColor(_renderer, 22, 22, 22, 200);
     SDL_RenderFillRect(_renderer, _rect);

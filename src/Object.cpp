@@ -1,6 +1,18 @@
 #include "Object.hpp"
 
 namespace Engine {
+
+    Object* NewObject(SDL_Renderer *renderer, const std::string& filename)
+    {
+        Object* obj = new Object(renderer, filename);
+        if (!obj->Load())
+        {
+            delete obj;
+            return nullptr;
+        }
+        return obj;
+    }
+
     Object::Object(SDL_Renderer* renderer, const std::string& filename) : _renderer(renderer)
     {
         _filename = filename;
@@ -33,6 +45,7 @@ namespace Engine {
 
         SDL_QueryTexture(_texture, NULL, NULL, &_width, &_height);
         SDL_FreeSurface(img);
+        return true;
     }
 
     void Object::setPosition(int x, int y) 

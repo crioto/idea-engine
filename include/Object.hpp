@@ -12,6 +12,7 @@
 #endif
 
 namespace Engine {
+    
     class Object {
         public:
         Object(SDL_Renderer *renderer, const std::string& filename);
@@ -28,6 +29,9 @@ namespace Engine {
         int _x;
         int _y;
     };
+
+    Object* NewObject(SDL_Renderer *renderer, const std::string& filename);
+
 };
 
 #endif
