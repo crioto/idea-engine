@@ -3,7 +3,7 @@ export CXXLIBS=
 export CXXINCLUDES=
 export CXXFLAGS=-g -I $(CURDIR)/include -std=gnu++14 -Wall
 export LDFLAGS=-lsdl2 -lsdl2_image -lsdl2_ttf
-export BINARY=idea-engine
+export BINARY=libidea-engine
 export LIB_DIRECTORY=$(CURDIR)/lib
 # Top directory for example projects
 export APP_DIRECTORY=examples
@@ -113,7 +113,7 @@ $(LIB_DIRECTORY)/$(BINARY).$(EXT): $(OBJECT_FILES)
 	$(CC) $(LDFLAGS) $(OBJECT_FILES) -shared -o $@
 
 make.examples:
-	@echo "Did you forgot to run ./configure?"
+	$(error Missing make.examples file. Run configure script first)
 
 make.config:
-	@echo "Did you forgot to run ./configure?"
+	$(error Missing make.config file. Run configure script first)
