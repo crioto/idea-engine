@@ -2,7 +2,6 @@
 *.swo
 bin/*
 .vscode
-config.make
 assets/*
 .DS_Store
 build
@@ -14,3 +13,6 @@ win/.vs
 win/x64
 win/x86
 .vs
+lib/
+make.config
+make.example

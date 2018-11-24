@@ -20,7 +20,7 @@ namespace Engine {
 class Console : public EventBase {
 public:
     Console(SDL_Renderer* renderer);
-    ~Console();
+    virtual ~Console();
     void activate();
     void deactivate();
     void toggle();

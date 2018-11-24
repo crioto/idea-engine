@@ -35,7 +35,7 @@ namespace Engine
         std::vector<std::string> _args;
         SDL_Window* _window = NULL;
 		SDL_Renderer* _renderer = NULL;
-        SDL_Surface* _surface = NULL;
+        // SDL_Surface* _surface = NULL;
         Simulation* _sim;
         bool _running;
     };
