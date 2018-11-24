@@ -15,4 +15,4 @@ win/x86
 .vs
 lib/
 make.config
-make.example
+make.examples
