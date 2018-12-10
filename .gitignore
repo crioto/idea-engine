@@ -16,3 +16,4 @@ win/x86
 lib/
 make.config
 make.examples
+*.log

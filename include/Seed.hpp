@@ -1,5 +1,5 @@
-#ifndef __SEED_H__
-#define __SEED_H__
+#ifndef __IDEA_ENGINE_SEED_H__
+#define __IDEA_ENGINE_SEED_H__
 
 #include <cmath>
 #include <iostream>
@@ -10,20 +10,20 @@
 #include "SDL2/SDL.h"
 #endif
 
-#include "ConsoleCommand.hpp"
+#include "Command.hpp"
 
 // Perlin noise implementation based on https://flafla2.github.io/2014/08/09/perlinnoise.html
 
-namespace Engine
+namespace IdeaEngine
 {
-    class Seed : public ConsoleCommand
+    class Seed : public Command
     { 
         public:
         // static const int permutationSize = 512;
         Seed(SDL_Renderer* renderer, int seed);
         ~Seed();
 
-        bool handleConsoleCommand(const std::string& command);
+        bool handleCommand(const std::string& command);
 
         double perlin(double x, double y, double z);
         double fade(double t);

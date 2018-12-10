@@ -1,6 +1,6 @@
 #include "Simulation.hpp"
 
-namespace Engine
+namespace IdeaEngine
 {
     Simulation::Simulation()
     {
@@ -12,7 +12,7 @@ namespace Engine
 
     }
 
-    bool Simulation::handleConsoleCommand(const std::string& command)
+    bool Simulation::handleCommand(const std::string& command)
     {
         if (command == "quit")
         {
@@ -25,5 +25,10 @@ namespace Engine
     SimulationState Simulation::getState()
     {
         return _state;
+    }
+
+    void Simulation::setState(SimulationState state)
+    {
+        _state = state;
     }
 }

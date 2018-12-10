@@ -1,6 +1,6 @@
 #include "Level.hpp"
 
-namespace Engine
+namespace IdeaEngine
 {
     Level::Level(const std::string& seed) : _seed(seed)
     {
@@ -12,7 +12,7 @@ namespace Engine
 
     }
 
-    bool Level::handleConsoleCommand(const std::string& command)
+    bool Level::handleCommand(const std::string& command)
     {
         
         return false;

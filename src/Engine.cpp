@@ -8,159 +8,173 @@
 #include "SDL2/SDL_ttf.h"
 #endif
 
-namespace Engine {
+namespace IdeaEngine {
 
-    //int roll(int min, int max)
-    //{
-    //    srand(time(NULL));
-    //
-    //	return (rand() % 3) + 1;
-    //}
+Engine::Engine(std::vector<std::string> args)
+{
+    _windowWidth = 1024;
+    _windowHeight = 768;
 
-    Engine::Engine(std::vector<std::string> args)
-    {
-        _args = args;
-        _running = false;
-        _sim = new Simulation();
+    auto console_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
+    console_sink->set_level(spdlog::level::debug);
+    
+    auto file_sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>("idea-engine.log", true);
+    file_sink->set_level(spdlog::level::trace);
+
+    _log = std::make_shared<spdlog::logger>("idea", console_sink );
+    _log->sinks().push_back(file_sink);
+    _log->set_level(spdlog::level::debug);
+    _log->info("Initializing engine");
+    spdlog::register_logger(_log);
+
+    _args = args;
+    _running = false;
+    _sim = new Simulation();
+}
+
+Engine::~Engine()
+{
+    _log->info("Cleaning up");
+    delete _command;
+    delete _scene;
+    delete _event;
+    delete _manager;
+    delete _camera;
+    TTF_Quit();
+    SDL_Quit();
+}
+
+void Engine::initialize()
+{
+    _log->info("Initializing SDL");
+    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+        _log->critical("Failed to initialize SDL2: {0}", SDL_GetError());
+        return;
     }
 
-    Engine::~Engine() {
-        TTF_Quit();
-        SDL_Quit();
+    if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1")) {
+        _log->critical("Failed to initialize SDL2 hinting: {0}", SDL_GetError());
+        return;
     }
 
-    void Engine::initialize()
-    {
-        if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-            std::cout << "Failed to initialize SDL2: " << SDL_GetError() << std::endl;
-            return;
+    if ((_window = SDL_CreateWindow("My SDL Game", SDL_WINDOWPOS_UNDEFINED,
+             SDL_WINDOWPOS_UNDEFINED, _windowWidth, _windowHeight,
+             SDL_WINDOW_SHOWN))
+        == NULL) {
+        _log->critical("Failed to initialize SDL2 window: ", SDL_GetError());
+        return;
+    }
+
+    // _surface = SDL_GetWindowSurface(_window);
+
+    if ((_renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED)) == NULL) {
+        _log->critical("Failed to create SDL Renderer: ", SDL_GetError());
+        return;
+    }
+
+    if (TTF_Init() < 0) {
+        _log->critical("Failed to initialize TTF: ", TTF_GetError());
+        return;
+    }
+
+    SDL_SetRenderDrawColor(_renderer, 0x00, 0x00, 0x88, 0xFF);
+
+    _manager = new ResourceManager(_renderer, _log);
+    _scene = new Scene("top-level", _renderer, _log);
+    _event = new Event();
+    _camera = new Camera(_windowWidth, _windowHeight);
+    _command = new CommandInterface("cli", _renderer);
+    _event->subscribe(_command);
+    _log->info("Initialization complete");
+}
+
+void Engine::deinitialize() { _log->info("Deinitializing engine"); }
+
+// This is a predefined game loop
+int Engine::run()
+{
+    if (_scene == nullptr) {
+      _log->critical("Top-level scene is null. Forgot to initalize?");
+        return -1;
+    }
+    
+    SDL_Event event;
+    _running = true;
+    _log->info("Starting main loop");
+    Uint32 wait = 1000.0f/30;
+    Uint32 frameStart = 0;
+    Sint32 delay;
+    while (_sim->getState() != SIM_SHUTDOWN) {
+        while (SDL_PollEvent(&event)) {
+            _event->process(&event);
         }
-
-        if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1")) {
-            std::cout << "Failed to initialize SDL2 hinting: " << SDL_GetError()
-                << std::endl;
-            return;
-        }
-
-        if ((_window = SDL_CreateWindow("My SDL Game", SDL_WINDOWPOS_UNDEFINED,
-                        SDL_WINDOWPOS_UNDEFINED, 1024, 768,
-                        SDL_WINDOW_SHOWN))
-                == NULL) {
-            std::cout << "Failed to initialize SDL2 window: " << SDL_GetError()
-                << std::endl;
-            return;
-        }
-
-        // _surface = SDL_GetWindowSurface(_window);
-
-        if ((_renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED)) == NULL) {
-            std::cout << "Failed to create SDL Renderer: " << SDL_GetError()
-                << std::endl;
-            return;
-        }
-
-        if (TTF_Init() < 0) 
-        {
-            std::cout << "Failed to initialize TTF: " << TTF_GetError() << std::endl;
-            return;
-        }
-
+        SDL_RenderClear(_renderer);
         SDL_SetRenderDrawColor(_renderer, 0x00, 0x00, 0x88, 0xFF);
-    }
-
-    void Engine::deinitialize()
-    {
-        std::cout << "Deinitializing" << std::endl;
-    }
-
-    int Engine::run()
-    {
-        Console *console = new Console(_renderer);
-        console->subscribe(_sim);
-        Event *eventSystem = new Event();
-
-        // Add random here
-        Level* level = new Level("0");
-        console->subscribe(level);
-
-        Seed* seed = new Seed(_renderer, 0);
-        console->subscribe(seed);
-
-        Scene* scene = new Scene(_renderer);
-
-        // int cur = 1;
-        // int ycur = 0;
-
-        // for (int y = -100; y < 1000; y = y + 16) {
-        //     if (offset == 0) {
-        //         offset = 16;
-        //     } else {
-        //         offset = 0;
-        //     }
-        //     ycur++;
-        //     if (ycur >= 4) {
-        //         ycur = 1;
-        //     }
-        //     cur = ycur;
-        //     for (int x = -100; x < 1000; x = x + 32) {
-        //         cur++;
-        //         if (cur >= 4) {
-        //             cur = 1;
-        //         }
-        //         char filename[128];
-        //         std::sprintf(filename, "../assets/grass_%d.png", cur);
-        //         Object* obj = new Object(_renderer, std::string(filename));
-        //         obj->Load();
-        //         obj->setPosition(x + offset, y);
-        //         scene->addObject(obj);
-        //     }
-        // }
-
-        auto player = NewObject(_renderer, "../assets/player_tilesheet.png");
-        if (player != nullptr) 
-        {
-            player->setPosition(0,0);
-            scene->addObject(player);
+        _scene->Render(_camera);
+        _command->Render();
+        SDL_RenderPresent(_renderer);
+        delay = wait - (SDL_GetTicks() - frameStart);
+        if (delay > 0) {
+            SDL_Delay((Uint32)delay);
         }
-
-        //Building *building = new Building(_renderer, 202220, 300, 400);
-        //building->generate();
-
-        eventSystem->subscribe(console);
-
-        SDL_Event event;
-        _running = true;
-        while (_sim->getState() != SIM_SHUTDOWN) {
-            while (SDL_PollEvent(&event))
-            {
-                eventSystem->process(&event);
-                //genericEvent->process(&event);
-            }
-            // switch (event.type) {
-            // case SDL_QUIT:
-            //     _running = false;
-            //     break;
-            // case SDL_KEYDOWN:
-            //     if (event.key.keysym.sym == SDLK_q) {
-            //         console->activate();
-            //     }
-            //     break;
-            // case SDL_TEXTINPUT:
-            //     console->handleText(std::string(event.text.text));
-            //     break;
-            // }
-            SDL_RenderClear(_renderer);
-            scene->Render();
-            //building->render();
-            seed->render();
-            console->Render();
-            SDL_RenderPresent(_renderer);
-        }
-        deinitialize();
-        if (console)
-        {
-            delete console;
-        }
-        return 0;
+        frameStart = SDL_GetTicks();
+        loadFromQueue();
     }
+    deinitialize();
+    return 0;
+}
+
+void Engine::enableConsole() {}
+
+int Engine::getWindowWidth()
+{
+    return _windowWidth;
+}
+
+int Engine::getWindowHeight()
+{
+    return _windowHeight;
+}
+
+SDL_Renderer* Engine::renderer() { return _renderer; }
+
+Scene* Engine::scene() { return _scene; }
+
+Simulation* Engine::simulation() { return _sim; }
+
+Event* Engine::event() { return _event; }
+
+CommandInterface* Engine::cli() { return _command; }
+
+Camera* Engine::camera() { return _camera; }
+
+void Engine::addToQueue(Object* obj)
+{
+    if (obj == nullptr) {
+        _log->warn("Attempt to add null object to queue");
+        return;
+    }
+    _log->info("Adding object {0} to queue", obj->id());
+    _loadingQueue.push_back(obj);
+}
+
+void Engine::loadFromQueue()
+{
+    if (_loadingQueue.size() == 0) return;
+    auto obj = _loadingQueue.front();
+    if (obj == nullptr) return;
+    obj->Load();
+    _loadingQueue.pop_front();
+}
+
+std::shared_ptr<spdlog::logger> Engine::log()
+{
+    return _log;
+}
+
+ResourceManager* Engine::manager()
+{
+    return _manager;
+}
+
 }

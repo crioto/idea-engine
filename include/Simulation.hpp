@@ -1,25 +1,26 @@
-#ifndef __SIMULATION_H__
-#define __SIMULATION_H__
+#ifndef __IDEA_ENGINE_SIMULATION_H__
+#define __IDEA_ENGINE_SIMULATION_H__
 
-#include "ConsoleCommand.hpp"
+#include "Command.hpp"
 
-typedef enum {
-    SIM_INIT,
-    SIM_RUNNING,
-    SIM_SHUTDOWN
-} SimulationState;
-
-namespace Engine
+namespace IdeaEngine
 {
-    class Simulation : public ConsoleCommand
+    typedef enum {
+        SIM_INIT,
+        SIM_RUNNING,
+        SIM_SHUTDOWN
+    } SimulationState;
+
+    class Simulation : public Command
     {
         public:
-        Simulation();
-        ~Simulation();
-        bool handleConsoleCommand(const std::string& command);
-        SimulationState getState();
+            Simulation();
+            ~Simulation();
+            bool handleCommand(const std::string& command);
+            SimulationState getState();
+            void setState(SimulationState state);
         private:
-        SimulationState _state;
+            SimulationState _state;
     };
 }
 

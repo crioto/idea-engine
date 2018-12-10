@@ -1,13 +1,18 @@
 PROJECT_NAME=render-screen
+OBJ = $(BUILD_DIRECTORY)/render-screen/render-screen.o \
+			$(BUILD_DIRECTORY)/render-screen/Events.o
 
 render-screen:
 	@echo $(BUILD_DIRECTORY)
 render-screen: render-screen-dirs $(BIN_DIRECTORY)/render-screen
 
-$(BIN_DIRECTORY)/render-screen: $(BUILD_DIRECTORY)/render-screen/render-screen.o
-	$(CC) $(LDFLAGS) -L$(LIB_DIRECTORY) -lidea-engine $(BUILD_DIRECTORY)/render-screen/render-screen.o -o $@
+$(BIN_DIRECTORY)/render-screen: $(OBJ)
+	$(CC) $(LDFLAGS) -L$(LIB_DIRECTORY) -lidea-engine $(OBJ) -o $@
 
 $(BUILD_DIRECTORY)/render-screen/render-screen.o: render-screen.cpp
+	$(CC) $(CXXFLAGS) -c $< -o $@
+
+$(BUILD_DIRECTORY)/render-screen/Events.o: Events.cpp Events.hpp
 	$(CC) $(CXXFLAGS) -c $< -o $@
 
 render-screen-dirs:

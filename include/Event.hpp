@@ -1,5 +1,5 @@
-#ifndef __EVENT_H__
-#define __EVENT_H__
+#ifndef __IDEA_ENGINE_EVENT_H__
+#define __IDEA_ENGINE_EVENT_H__
 
 #include <iostream>
 #include <vector>
@@ -12,7 +12,7 @@
 #include "EventBase.hpp"
 
 
-namespace Engine 
+namespace IdeaEngine 
 {
     typedef std::vector<EventBase*> EventSubscriptions;
 
@@ -26,6 +26,7 @@ namespace Engine
         void keyUp(SDL_Keycode key);
         void keyDown(SDL_Keycode key);
         void keyText(char* characters);
+        void mouseMotion(Uint32 state, Sint32 x, Sint32 y, Sint32 xrel, Sint32 yrel);
         private:
         EventSubscriptions _events;
     };

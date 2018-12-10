@@ -1,6 +1,6 @@
 #include "Seed.hpp"
 
-namespace Engine
+namespace IdeaEngine
 {
     // const int Seed::permutationSize;
 
@@ -29,7 +29,7 @@ namespace Engine
 
     }
 
-    bool Seed::handleConsoleCommand(const std::string& command)
+    bool Seed::handleCommand(const std::string& command)
     {
         if (command.substr(0, 8) == "seed.set")
         {

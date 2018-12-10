@@ -1,6 +1,6 @@
 #include "Event.hpp"
 
-namespace Engine {
+namespace IdeaEngine {
     Event::Event()
     {
     }
@@ -20,6 +20,9 @@ namespace Engine {
             break;
             case SDL_TEXTINPUT:
             keyText(event->text.text);
+            break;
+            case SDL_MOUSEMOTION:
+            mouseMotion(event->motion.state, event->motion.x, event->motion.y, event->motion.xrel, event->motion.yrel);
             break;
         }
         // switch (event->type) {
@@ -60,6 +63,13 @@ namespace Engine {
     {
         for (auto it = _events.begin(); it != _events.end(); it++) {
             (*it)->handleText(characters); 
+        }
+    }
+
+    void Event::mouseMotion(Uint32 state, Sint32 x, Sint32 y, Sint32 xrel, Sint32 yrel)
+    {
+        for (auto it = _events.begin(); it != _events.end(); it++) {
+            (*it)->handleMouseMove(state, x, y, xrel, yrel); 
         }
     }
 }
