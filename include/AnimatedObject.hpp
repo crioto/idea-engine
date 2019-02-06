@@ -7,6 +7,7 @@
 #include "yaml-cpp/yaml.h"
 
 namespace IdeaEngine {
+
   class AnimatedObject : public Object {
     public:
       AnimatedObject(const std::string& id, ResourceManager* manager, SDL_Renderer* renderer, const std::string& filename, std::shared_ptr<spdlog::logger> log);
