@@ -1,4 +1,5 @@
-OBJ = $(BUILD_DIRECTORY)/testsuite/AnimationFileBinaryTest.o \
+OBJ = $(BUILD_DIRECTORY)/testsuite/AnimationFilePlainTest.o \
+	$(BUILD_DIRECTORY)/testsuite/StringsUtilTest.o \
 	$(BUILD_DIRECTORY)/testsuite/TestSuite.o 
 
 suite: test-dirs $(BIN_DIRECTORY)/testsuite
@@ -6,7 +7,10 @@ suite: test-dirs $(BIN_DIRECTORY)/testsuite
 $(BIN_DIRECTORY)/testsuite: $(OBJ)
 	$(CC) $(LDFLAGS) -L$(LIB_DIRECTORY) -lidea-engine -lcppunit $(OBJ) -o $@
 
-$(BUILD_DIRECTORY)/testsuite/AnimationFileBinaryTest.o: AnimationFileBinaryTest.cpp AnimationFileBinaryTest.hpp
+$(BUILD_DIRECTORY)/testsuite/AnimationFilePlainTest.o: AnimationFilePlainTest.cpp AnimationFilePlainTest.hpp
+	$(CC) $(CXXFLAGS) -c $< -o $@
+
+$(BUILD_DIRECTORY)/testsuite/StringsUtilTest.o: StringsUtilTest.cpp StringsUtilTest.hpp
 	$(CC) $(CXXFLAGS) -c $< -o $@
 
 $(BUILD_DIRECTORY)/testsuite/TestSuite.o: TestSuite.cpp

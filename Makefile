@@ -15,10 +15,11 @@ CONFIGFILE=make.config
 
 OBJECT_FILES = $(BUILD_DIRECTORY)/Engine.o \
 				$(BUILD_DIRECTORY)/Exception.o \
+				$(BUILD_DIRECTORY)/StringsUtil.o \
 				$(BUILD_DIRECTORY)/Scene.o \
 				$(BUILD_DIRECTORY)/Object.o \
 				$(BUILD_DIRECTORY)/AnimationFileBase.o \
-				$(BUILD_DIRECTORY)/AnimationFileBinary.o \
+				$(BUILD_DIRECTORY)/AnimationFilePlain.o \
 				$(BUILD_DIRECTORY)/AnimatedObject.o \
 				$(BUILD_DIRECTORY)/Level.o \
 				$(BUILD_DIRECTORY)/Texture.o \
@@ -50,7 +51,7 @@ tools: idea-animator
 idea-animator:
 	$(MAKE) -C ./tools/idea-animator idea-animator
 
-tests: 
+tests: lib
 	$(MAKE) -C ./testsuite suite
 
 test: tests
@@ -84,6 +85,9 @@ $(BUILD_DIRECTORY)/Engine.o: $(SOURCE_DIR)/Engine.cpp $(INCLUDE_DIR)/Engine.hpp
 $(BUILD_DIRECTORY)/Exception.o: $(SOURCE_DIR)/Exception.cpp $(INCLUDE_DIR)/Exception.hpp
 	$(CC) $(CXXFLAGS) -c -fPIC $< -o $@
 
+$(BUILD_DIRECTORY)/StringsUtil.o: $(SOURCE_DIR)/StringsUtil.cpp $(INCLUDE_DIR)/StringsUtil.hpp
+	$(CC) $(CXXFLAGS) -c -fPIC $< -o $@
+
 $(BUILD_DIRECTORY)/Scene.o: $(SOURCE_DIR)/Scene.cpp $(INCLUDE_DIR)/Scene.hpp
 	$(CC) $(CXXFLAGS) -c -fPIC $< -o $@
 
@@ -93,7 +97,7 @@ $(BUILD_DIRECTORY)/Object.o: $(SOURCE_DIR)/Object.cpp $(INCLUDE_DIR)/Object.hpp
 $(BUILD_DIRECTORY)/AnimationFileBase.o: $(SOURCE_DIR)/AnimationFileBase.cpp $(INCLUDE_DIR)/AnimationFileBase.hpp
 	$(CC) $(CXXFLAGS) -c -fPIC $< -o $@
 
-$(BUILD_DIRECTORY)/AnimationFileBinary.o: $(SOURCE_DIR)/AnimationFileBinary.cpp $(INCLUDE_DIR)/AnimationFileBinary.hpp
+$(BUILD_DIRECTORY)/AnimationFilePlain.o: $(SOURCE_DIR)/AnimationFilePlain.cpp $(INCLUDE_DIR)/AnimationFilePlain.hpp
 	$(CC) $(CXXFLAGS) -c -fPIC $< -o $@
 
 $(BUILD_DIRECTORY)/AnimatedObject.o: $(SOURCE_DIR)/AnimatedObject.cpp $(INCLUDE_DIR)/AnimatedObject.hpp

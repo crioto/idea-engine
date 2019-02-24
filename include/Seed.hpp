@@ -34,9 +34,9 @@ namespace IdeaEngine
         void toggleDebug();
         int convert(double v);
         private:
+        int _seed;
         SDL_Renderer* _renderer;
         bool _debug;
-        int _seed;
         int _repeat;
         static int p[512];
     };

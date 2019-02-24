@@ -1,8 +1,8 @@
 #include <cppunit/extensions/TestFactoryRegistry.h>
 
-#include "AnimationFileBinaryTest.hpp"
+#include "AnimationFilePlainTest.hpp"
 
-#include "AnimationFileBinary.hpp"
+#include "AnimationFilePlain.hpp"
 
 void AnimationFileBinaryTest::tearUp()
 {
@@ -16,7 +16,8 @@ void AnimationFileBinaryTest::tearDown()
 
 void AnimationFileBinaryTest::testUnmarshal()
 {
-
+    std::string expect = "8 0 100 100 20 20 1 130 100 22 21 2 160 100 24 23 3 200 100 26 25 4 230 100 28 27 5 260 100 30 29 6 300 100 32 31 7 330 100 34 33 ";
+    
 }
 
 void AnimationFileBinaryTest::testMarshal()
@@ -31,9 +32,10 @@ void AnimationFileBinaryTest::testMarshal()
     v.push_back({6, 300, 100, 32, 31});
     v.push_back({7, 330, 100, 34, 33});
     
-
-    IdeaEngine::AnimationFileBinary t("");
-    t.marshal(v);
+    IdeaEngine::AnimationFilePlain t("");
+    auto res = std::move(t.marshal(v));
+    std::string expect = "8 0 100 100 20 20 1 130 100 22 21 2 160 100 24 23 3 200 100 26 25 4 230 100 28 27 5 260 100 30 29 6 300 100 32 31 7 330 100 34 33 ";
+    CPPUNIT_ASSERT(res == expect);
 }
 
 CPPUNIT_TEST_SUITE_REGISTRATION( AnimationFileBinaryTest );

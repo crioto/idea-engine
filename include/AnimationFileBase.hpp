@@ -8,7 +8,7 @@ namespace IdeaEngine {
 
   struct Frame
   {
-    uint8_t index;
+    uint16_t index;
     uint16_t x;
     uint16_t y;
     uint16_t w;
@@ -22,8 +22,8 @@ namespace IdeaEngine {
         const std::string& filename() const;
         virtual std::vector<Frame> load();
         virtual void save();
-        virtual std::vector<Frame> unmarshal(char** data) = 0;
-        virtual char** marshal(std::vector<Frame> data) = 0;
+        virtual std::vector<Frame> unmarshal(const std::string& data) = 0;
+        virtual std::string marshal(std::vector<Frame> data) = 0;
         std::vector<Frame> get();
         void set(std::vector<Frame> frames);
         protected:

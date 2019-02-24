@@ -24,11 +24,11 @@ Object* NewObjectInQueue(const std::string& id, Engine* engine, const std::strin
 }
 
 Object::Object(const std::string& id, ResourceManager* manager, SDL_Renderer* renderer, const std::string& filename, std::shared_ptr<spdlog::logger> log)
-    : _loaded(false)
-    , _id(id)
+    : _id(id)
     , _manager(manager)
     , _renderer(renderer)
     , _log(log)
+    , _loaded(false)
 {
     _attached = true;
     _log->info("Creating object with id: {0} from {1}", _id, filename);

@@ -1,6 +1,6 @@
 
 #include <cppunit/ui/text/TestRunner.h>
-#include "AnimationFileBinaryTest.hpp"
+#include "AnimationFilePlainTest.hpp"
 
 int main(int argc, char* argv[])
 {  

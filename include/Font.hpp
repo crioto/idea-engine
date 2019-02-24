@@ -23,8 +23,8 @@ namespace IdeaEngine {
       TTF_Font* get();
       int size();
     private:
-      int _size;
       std::string _id;
+      int _size;
       TTF_Font* _font;
       std::shared_ptr<spdlog::logger> _log;
   };

@@ -33,16 +33,20 @@ namespace IdeaEngine {
         void detach();
         bool loaded();
         protected:
-        std::string _filename;
+        std::string _id;
+        ResourceManager* _manager;
         SDL_Renderer *_renderer;
+        std::string _filename;
+        std::shared_ptr<spdlog::logger> _log;
+
         Texture *_texture;
         int _x;
         int _y;
-        std::string _id;
-        std::shared_ptr<spdlog::logger> _log;
+        
+        
         bool _attached; // whether or not this object attached to camera
         bool _loaded; // whether or not this object was loaded
-        ResourceManager* _manager;
+        
     };
 
     Object* NewObject(const std::string& id, Engine* engine, const std::string& filename);
