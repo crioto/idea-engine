@@ -24,6 +24,12 @@ namespace IdeaEngine {
             case SDL_MOUSEMOTION:
             mouseMotion(event->motion.state, event->motion.x, event->motion.y, event->motion.xrel, event->motion.yrel);
             break;
+            case SDL_MOUSEBUTTONDOWN:
+            mouseDown(event->button.button, event->button.state, event->button.x, event->button.y, event->button.clicks);
+            break;
+            case SDL_MOUSEBUTTONUP:
+            mouseUp(event->button.button, event->button.state, event->button.x, event->button.y, event->button.clicks);
+            break;
         }
         // switch (event->type) {
         //     case SDL_QUIT:
@@ -70,6 +76,20 @@ namespace IdeaEngine {
     {
         for (auto it = _events.begin(); it != _events.end(); it++) {
             (*it)->handleMouseMove(state, x, y, xrel, yrel); 
+        }
+    }
+
+    void Event::mouseDown(Uint8 button, Uint32 state, Sint32 x, Sint32 y, int clicks)
+    {
+        for (auto it = _events.begin(); it != _events.end(); it++) {
+            (*it)->handleMouseDown(button, state, x, y, clicks); 
+        }
+    }
+
+    void Event::mouseUp(Uint8 button, Uint32 state, Sint32 x, Sint32 y, int clicks)
+    {
+        for (auto it = _events.begin(); it != _events.end(); it++) {
+            (*it)->handleMouseUp(button, state, x, y, clicks); 
         }
     }
 }

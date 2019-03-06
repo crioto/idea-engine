@@ -80,10 +80,10 @@ void Engine::initialize()
     SDL_SetRenderDrawColor(_renderer, 0x00, 0x00, 0x88, 0xFF);
 
     _manager = new ResourceManager(_renderer, _log);
-    _scene = new Scene("top-level", _renderer, _log);
+    _scene = new Scene("top-level", _log);
     _event = new Event();
     _camera = new Camera(_windowWidth, _windowHeight);
-    _command = new CommandInterface("cli", _renderer);
+    _command = new CommandInterface("cli", this);
     _event->subscribe(_command);
     _log->info("Initialization complete");
 }
@@ -108,9 +108,9 @@ int Engine::run()
         while (SDL_PollEvent(&event)) {
             _event->process(&event);
         }
-        SDL_RenderClear(_renderer);
         SDL_SetRenderDrawColor(_renderer, 0x00, 0x00, 0x88, 0xFF);
-        _scene->Render(_camera);
+        SDL_RenderClear(_renderer);
+        _scene->render(_camera);
         _command->Render();
         SDL_RenderPresent(_renderer);
         delay = wait - (SDL_GetTicks() - frameStart);
@@ -163,7 +163,7 @@ void Engine::loadFromQueue()
     if (_loadingQueue.size() == 0) return;
     auto obj = _loadingQueue.front();
     if (obj == nullptr) return;
-    obj->Load();
+    obj->load();
     _loadingQueue.pop_front();
 }
 

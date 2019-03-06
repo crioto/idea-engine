@@ -2,15 +2,14 @@
 
 namespace IdeaEngine {
 
-std::shared_ptr<Scene> NewScene(const std::string& id, SDL_Renderer* renderer)
+std::shared_ptr<Scene> NewScene(const std::string& id)
 {
-    auto scene = std::make_shared<Scene>(id, renderer, spdlog::get("idea"));
+    auto scene = std::make_shared<Scene>(id, spdlog::get("idea"));
     return scene;
 }
 
-Scene::Scene(const std::string& id, SDL_Renderer* renderer, std::shared_ptr<spdlog::logger> log)
-    : _renderer(renderer)
-    , _log(log)
+Scene::Scene(const std::string& id, std::shared_ptr<spdlog::logger> log)
+    : _log(log)
     , _id(id)
 {
     _log->info("Initializing new scene {0}", _id);
@@ -35,17 +34,30 @@ void Scene::addScene(std::shared_ptr<Scene> scene) {
     _scenes.push_back(std::move(scene));
 }
 
-void Scene::Render(Camera *camera)
-{
-    if (_renderer == nullptr)
-        return;
 
+void Scene::render(Camera *camera)
+{
     for (auto it = _objects.begin(); it != _objects.end(); it++) {
-        (*it)->Render(camera);
+        (*it)->render(camera);
     }
 
     for (auto it = _scenes.begin(); it != _scenes.end(); it++) {
-        (*it)->Render(camera);
+        (*it)->render(camera);
     }
 }
+
+std::vector<Object*> Scene::findObjects(int x, int y) {
+    std::vector<Object*> result;
+    for (auto it = _objects.begin(); it != _objects.end(); it++) {
+        int ox = (*it)->x();
+        int ow = (*it)->width() + ox;
+        int oy = (*it)->y();
+        int oh = (*it)->height() + oy;
+        if (ox <= x && ow >= x && oy <= y && oh >= y) {
+            result.push_back((*it));
+        } 
+    }
+    return result;
+}
+
 }

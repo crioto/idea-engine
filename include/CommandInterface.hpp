@@ -21,9 +21,12 @@
 #include "Object.hpp"
 
 namespace IdeaEngine {
+
+class Engine;
+
 class CommandInterface : public EventBase {
 public:
-    CommandInterface(const std::string& id, SDL_Renderer* renderer);
+    CommandInterface(const std::string& id, Engine* engine);
     virtual ~CommandInterface();
     void activate();
     void deactivate();

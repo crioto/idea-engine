@@ -27,6 +27,8 @@ namespace IdeaEngine
         void keyDown(SDL_Keycode key);
         void keyText(char* characters);
         void mouseMotion(Uint32 state, Sint32 x, Sint32 y, Sint32 xrel, Sint32 yrel);
+        void mouseDown(Uint8 button, Uint32 state, Sint32 x, Sint32 y, int clicks);
+        void mouseUp(Uint8 button, Uint32 state, Sint32 x, Sint32 y, int clicks);
         private:
         EventSubscriptions _events;
     };

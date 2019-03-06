@@ -12,11 +12,11 @@ namespace IdeaEngine {
 
   }
 
-  void AnimatedObject::Load()
+  bool AnimatedObject::load()
   {
-    Object::Load();
+    Object::load();
 
-
+    return true;
   }
 
   void AnimatedObject::createFrames(const std::string& frameDataFile)

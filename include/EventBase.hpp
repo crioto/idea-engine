@@ -11,18 +11,23 @@
 
 namespace IdeaEngine
 {
+    class Engine;
+
     class EventBase 
     {
         public:
-        EventBase(const std::string& id);
+        EventBase(const std::string& id, Engine *engine);
         virtual const std::string& id() const;
         virtual void handleKeyUp(SDL_Keycode key);
         virtual void handleKeyDown(SDL_Keycode key);
         virtual void handleText(char* characters);
         virtual void handleMouseMove(Uint32 state, Sint32 x, Sint32 y, Sint32 xrel, Sint32 yrel);
+        virtual void handleMouseDown(Uint8 button, Uint32 state, Sint32 x, Sint32 y, int clicks);
+        virtual void handleMouseUp(Uint8 button, Uint32 state, Sint32 x, Sint32 y, int clicks);
         virtual bool operator==(const EventBase& eb) const;
         protected:
         std::string _id;
+        Engine* _engine;
     };
 }
 

@@ -56,7 +56,7 @@ for file in `ls examples`; do
 done
 
 echo "" >> make.examples
-echo "examples: lib$examples_list" >> make.examples
+echo "examples:$examples_list" >> make.examples
 echo "" >> make.examples
 echo "examples-clean:$clean_list" >> make.examples
 echo "" >> make.examples

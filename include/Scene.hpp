@@ -13,25 +13,25 @@
 
 #include "Object.hpp"
 #include "Camera.hpp"
+#include "Primitives.hpp"
 
 namespace IdeaEngine {
 class Scene {
 public:
-    Scene(const std::string& id, SDL_Renderer* renderer, std::shared_ptr<spdlog::logger> log);
+    Scene(const std::string& id, std::shared_ptr<spdlog::logger> log);
     ~Scene();
     void addObject(Object* _object);
     void addScene(std::shared_ptr<Scene> scene);
-    void Render(Camera* camera);
-
+    void render(Camera* camera);
+    std::vector<Object*> findObjects(int x, int y);
 private:
-    SDL_Renderer* _renderer;
     std::vector<std::shared_ptr<Scene>> _scenes;
     std::vector<Object*> _objects;
     std::shared_ptr<spdlog::logger> _log;
     std::string _id;
 };
 
-    std::shared_ptr<Scene> NewScene(const std::string& id, SDL_Renderer *renderer);
+    std::shared_ptr<Scene> NewScene(const std::string& id);
 };
 
 #endif

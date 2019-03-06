@@ -2,7 +2,7 @@ export CC=g++
 export CXXLIBS=
 export CXXINCLUDES=
 export CXXFLAGS=-g -I $(CURDIR)/include --std=c++17 -Wall
-export LDFLAGS=-lsdl2 -lsdl2_image -lsdl2_ttf
+export LDFLAGS=-g -lsdl2 -lsdl2_image -lsdl2_ttf
 export BINARY=libidea-engine
 export LIB_DIRECTORY=$(CURDIR)/lib
 # Top directory for example projects
@@ -28,7 +28,10 @@ OBJECT_FILES = $(BUILD_DIRECTORY)/Engine.o \
 				 $(BUILD_DIRECTORY)/Command.o \
 			   $(BUILD_DIRECTORY)/Seed.o \
 				 $(BUILD_DIRECTORY)/Camera.o \
-				 $(BUILD_DIRECTORY)/ResourceManager.o
+				 $(BUILD_DIRECTORY)/ResourceManager.o \
+				 $(BUILD_DIRECTORY)/Primitives.o \
+				 $(BUILD_DIRECTORY)/Rectangle.o \
+				 $(BUILD_DIRECTORY)/Text.o
 
 include $(CONFIGFILE)
 
@@ -113,6 +116,15 @@ $(BUILD_DIRECTORY)/Camera.o: $(SOURCE_DIR)/Camera.cpp $(INCLUDE_DIR)/Camera.hpp
 	$(CC) $(CXXFLAGS) -c -fPIC $< -o $@
 
 $(BUILD_DIRECTORY)/ResourceManager.o: $(SOURCE_DIR)/ResourceManager.cpp $(INCLUDE_DIR)/ResourceManager.hpp
+	$(CC) $(CXXFLAGS) -c -fPIC $< -o $@
+
+$(BUILD_DIRECTORY)/Primitives.o: $(SOURCE_DIR)/Primitives.cpp $(INCLUDE_DIR)/Primitives.hpp
+	$(CC) $(CXXFLAGS) -c -fPIC $< -o $@
+
+$(BUILD_DIRECTORY)/Rectangle.o: $(SOURCE_DIR)/Rectangle.cpp $(INCLUDE_DIR)/Rectangle.hpp
+	$(CC) $(CXXFLAGS) -c -fPIC $< -o $@
+
+$(BUILD_DIRECTORY)/Text.o: $(SOURCE_DIR)/Text.cpp $(INCLUDE_DIR)/Text.hpp
 	$(CC) $(CXXFLAGS) -c -fPIC $< -o $@
 
 $(LIB_DIRECTORY)/$(BINARY).$(EXT): $(OBJECT_FILES) 

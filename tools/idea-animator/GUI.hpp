@@ -4,6 +4,8 @@
 #include "Engine.hpp"
 #include "Scene.hpp"
 #include "Object.hpp"
+#include "Rectangle.hpp"
+#include "Text.hpp"
 
 class GUI {
   public:
@@ -11,12 +13,12 @@ class GUI {
     ~GUI();
 
     void create();
-
     std::shared_ptr<IdeaEngine::Scene> get();
 
   private:
     IdeaEngine::Engine* _engine;
     std::shared_ptr<IdeaEngine::Scene> _scene;
+
 };  
 
 #endif

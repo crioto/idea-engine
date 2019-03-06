@@ -19,34 +19,54 @@
 
 namespace IdeaEngine {
 
-    class Engine;
-    
-    class Object {
-        public:
-        Object(const std::string& id, ResourceManager* manager, SDL_Renderer *renderer, const std::string& filename, std::shared_ptr<spdlog::logger> log);
-        ~Object();
-        bool Load();
-        void setPosition(int x, int y);
-        void Render(Camera *camera);
-        const std::string& id() const;
-        void attach();
-        void detach();
-        bool loaded();
-        protected:
-        std::string _filename;
-        SDL_Renderer *_renderer;
-        Texture *_texture;
-        int _x;
-        int _y;
-        std::string _id;
-        std::shared_ptr<spdlog::logger> _log;
-        bool _attached; // whether or not this object attached to camera
-        bool _loaded; // whether or not this object was loaded
-        ResourceManager* _manager;
-    };
+class Engine;
 
-    Object* NewObject(const std::string& id, Engine* engine, const std::string& filename);
-    Object* NewObjectInQueue(const std::string& id, Engine* engine, const std::string& filename);
+class Object {
+public:
+    Object(const std::string& id, ResourceManager* manager, SDL_Renderer* renderer, const std::string& filename, std::shared_ptr<spdlog::logger> log);
+    ~Object();
+    virtual bool load();
+    virtual void render(Camera* camera);
+
+    void attach();
+    void detach();
+    bool loaded();
+    void hide();
+    void show();
+
+    // setters
+    void setX(int x);
+    void setY(int y);
+    void setWidth(int w);
+    void setHeight(int h);
+    void setPosition(int x, int y);
+
+    // getters
+    int x();
+    int y();
+    int width();
+    int height();
+    const std::string& id() const;
+
+protected:
+    std::string _id; // Object ID. Not guarantted to be unique within any scope
+    std::string _filename; // Filename of the object if any
+    SDL_Renderer* _renderer; // Renderer that is passed to underlying elements
+    Texture* _texture;
+    int _x;
+    int _y;
+    int _w;
+    int _h;
+    
+    std::shared_ptr<spdlog::logger> _log;
+    bool _hidden; // hidden objects are not rendered
+    bool _attached; // whether or not this object attached to camera
+    bool _loaded; // whether or not this object was loaded
+    ResourceManager* _manager; // resource manager used to load objects
+};
+
+Object* NewObject(const std::string& id, Engine* engine, const std::string& filename);
+Object* NewObjectInQueue(const std::string& id, Engine* engine, const std::string& filename);
 };
 
 #endif

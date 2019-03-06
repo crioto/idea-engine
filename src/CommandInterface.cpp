@@ -1,12 +1,14 @@
 #include "CommandInterface.hpp"
+#include "Engine.hpp"
 
 namespace IdeaEngine {
 
-CommandInterface::CommandInterface(const std::string& id, SDL_Renderer* renderer)
-    : EventBase(id)
+CommandInterface::CommandInterface(const std::string& id, Engine* engine)
+    : EventBase(id, engine)
     , _isActive(false)
-    , _renderer(renderer)
 {
+    _renderer = _engine->renderer();
+
     _log = spdlog::get("idea");
     _log->info("Initializing command interface");
 

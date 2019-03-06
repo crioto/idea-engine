@@ -3,14 +3,18 @@
 
 #include "Event.hpp"
 #include "Simulation.hpp"
+#include "Scene.hpp"
 
 class GameEvent : public IdeaEngine::EventBase {
  public:
   GameEvent(const std::string& id, IdeaEngine::Simulation* sim);
   void handleKeyUp(SDL_Keycode key);
+  void handleMouseUp(Uint8 button, Uint32 state, Sint32 x, Sint32 y, int clicks);
+  void setGUIScene(IdeaEngine::Scene* scene);
 
  private:
   IdeaEngine::Simulation* _sim;
+  IdeaEngine::Scene* _uiScene;
 };
 
 #endif

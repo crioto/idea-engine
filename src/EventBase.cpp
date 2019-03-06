@@ -1,8 +1,9 @@
 #include "EventBase.hpp"
+#include "Engine.hpp"
 
 namespace IdeaEngine
 {
-    EventBase::EventBase(const std::string& id) : _id(id)
+    EventBase::EventBase(const std::string& id, Engine* engine) : _id(id), _engine(engine)
     {
 
     }
@@ -28,6 +29,16 @@ namespace IdeaEngine
     }
 
     void EventBase::handleMouseMove(Uint32 state, Sint32 x, Sint32 y, Sint32 xrel, Sint32 yrel)
+    {
+        
+    }
+
+    void EventBase::handleMouseDown(Uint8 button, Uint32 state, Sint32 x, Sint32 y, int clicks)
+    {
+
+    }
+
+    void EventBase::handleMouseUp(Uint8 button, Uint32 state, Sint32 x, Sint32 y, int clicks)
     {
         
     }

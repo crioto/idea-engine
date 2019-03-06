@@ -11,7 +11,7 @@ namespace IdeaEngine {
     public:
       AnimatedObject(const std::string& id, ResourceManager* manager, SDL_Renderer* renderer, const std::string& filename, std::shared_ptr<spdlog::logger> log);
       ~AnimatedObject();
-      void Load();
+      bool load();
     private:
       void createFrames(const std::string& frameDataFile);
   };

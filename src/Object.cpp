@@ -6,7 +6,7 @@ namespace IdeaEngine {
 Object* NewObject(const std::string& id, Engine* engine, const std::string& filename)
 {
     Object* obj = new Object(id, engine->manager(), engine->renderer(), filename, spdlog::get("idea"));
-    if (!obj->Load()) {
+    if (!obj->load()) {
         delete obj;
         return nullptr;
     }
@@ -24,11 +24,12 @@ Object* NewObjectInQueue(const std::string& id, Engine* engine, const std::strin
 }
 
 Object::Object(const std::string& id, ResourceManager* manager, SDL_Renderer* renderer, const std::string& filename, std::shared_ptr<spdlog::logger> log)
-    : _loaded(false)
-    , _id(id)
-    , _manager(manager)
+    : _id(id)
+    , _hidden(false)
     , _renderer(renderer)
+    , _manager(manager)
     , _log(log)
+    , _loaded(false)
 {
     _attached = true;
     _log->info("Creating object with id: {0} from {1}", _id, filename);
@@ -41,24 +42,20 @@ Object::~Object()
 {
 }
 
-bool Object::Load()
+bool Object::load()
 {
     _texture = _manager->texture(_filename);
-    if (_texture == nullptr) return false;
+    if (_texture == nullptr)
+        return false;
     _loaded = true;
     _log->info("Object {0} loaded", _id);
     return true;
 }
 
-void Object::setPosition(int x, int y)
+void Object::render(Camera* camera)
 {
-    _x = x;
-    _y = y;
-}
-
-void Object::Render(Camera* camera)
-{
-    if (_texture == nullptr || !_loaded) return;
+    if (_texture == nullptr || !_loaded || _hidden)
+        return;
     SDL_Rect dst;
     if (_attached) {
         dst = { _x + camera->x(), _y + camera->y(), _texture->width(), _texture->height() };
@@ -69,10 +66,7 @@ void Object::Render(Camera* camera)
     return;
 }
 
-const std::string& Object::id() const
-{
-    return _id;
-}
+// -
 
 void Object::attach()
 {
@@ -87,5 +81,70 @@ void Object::detach()
 bool Object::loaded()
 {
     return _loaded;
+}
+
+void Object::hide()
+{
+    _hidden = true;
+}
+
+void Object::show()
+{
+    _hidden = false;
+}
+
+// setters
+
+void Object::setPosition(int x, int y)
+{
+    _x = x;
+    _y = y;
+}
+
+void Object::setX(int x)
+{
+    _x = x;
+}
+
+void Object::setY(int y)
+{
+    _y = y;
+}
+
+void Object::setWidth(int w)
+{
+    _w = w;
+}
+
+void Object::setHeight(int h)
+{
+    _h = h;
+}
+
+// getters
+
+int Object::x()
+{
+    return _x;
+}
+
+int Object::y()
+{
+    return _y;
+}
+
+int Object::width()
+{
+    return _w;
+}
+
+int Object::height()
+{
+    return _h;
+}
+
+const std::string& Object::id() const
+{
+    return _id;
 }
 }
