@@ -2,7 +2,7 @@ export CC=g++
 export CXXLIBS=
 export CXXINCLUDES=
 export CXXFLAGS=-g -I $(CURDIR)/include --std=c++17 -Wall
-export LDFLAGS=-g -lsdl2 -lsdl2_image -lsdl2_ttf
+export LDFLAGS=$(SDL_LIBS) -g -lsdl2 -lsdl2_image -lsdl2_ttf
 export BINARY=libidea-engine
 export LIB_DIRECTORY=$(CURDIR)/lib
 # Top directory for example projects
@@ -35,7 +35,7 @@ OBJECT_FILES = $(BUILD_DIRECTORY)/Engine.o \
 
 include $(CONFIGFILE)
 
-all: lib tools examples
+all: lib tools examples tests
 
 lib: shared static
 
@@ -50,6 +50,12 @@ tools: idea-animator
 idea-animator:
 	$(MAKE) -C ./tools/idea-animator idea-animator
 
+tests: lib
+	$(MAKE) -C ./testsuite suite
+
+test: tests
+	@LD_LIBRARY_PATH=./lib bin/testsuite
+
 include make.examples
 
 directories:
@@ -57,11 +63,13 @@ directories:
 	@mkdir -p $(BUILD_DIRECTORY)
 
 clean: examples-clean
+	$(MAKE) -C ./testsuite clean
 	$(MAKE) -C ./tools/idea-animator clean
 	-rm -f $(LIB_DIRECTORY)/$(BINARY)*
 	-rm -f $(OBJECT_FILES)
 
 mrproper: clean examples-mrproper
+	$(MAKE) -C ./testsuite mrproper
 	$(MAKE) -C ./tools/idea-animator mrproper
 	-rm -f $(CONFIGFILE)
 	-rm -f make.examples
@@ -73,10 +81,22 @@ mrproper: clean examples-mrproper
 $(BUILD_DIRECTORY)/Engine.o: $(SOURCE_DIR)/Engine.cpp $(INCLUDE_DIR)/Engine.hpp
 	$(CC) $(CXXFLAGS) -c -fPIC $< -o $@
 
+$(BUILD_DIRECTORY)/Exception.o: $(SOURCE_DIR)/Exception.cpp $(INCLUDE_DIR)/Exception.hpp
+	$(CC) $(CXXFLAGS) -c -fPIC $< -o $@
+
+$(BUILD_DIRECTORY)/StringsUtil.o: $(SOURCE_DIR)/StringsUtil.cpp $(INCLUDE_DIR)/StringsUtil.hpp
+	$(CC) $(CXXFLAGS) -c -fPIC $< -o $@
+
 $(BUILD_DIRECTORY)/Scene.o: $(SOURCE_DIR)/Scene.cpp $(INCLUDE_DIR)/Scene.hpp
 	$(CC) $(CXXFLAGS) -c -fPIC $< -o $@
 
 $(BUILD_DIRECTORY)/Object.o: $(SOURCE_DIR)/Object.cpp $(INCLUDE_DIR)/Object.hpp
+	$(CC) $(CXXFLAGS) -c -fPIC $< -o $@
+
+$(BUILD_DIRECTORY)/AnimationFileBase.o: $(SOURCE_DIR)/AnimationFileBase.cpp $(INCLUDE_DIR)/AnimationFileBase.hpp
+	$(CC) $(CXXFLAGS) -c -fPIC $< -o $@
+
+$(BUILD_DIRECTORY)/AnimationFilePlain.o: $(SOURCE_DIR)/AnimationFilePlain.cpp $(INCLUDE_DIR)/AnimationFilePlain.hpp
 	$(CC) $(CXXFLAGS) -c -fPIC $< -o $@
 
 $(BUILD_DIRECTORY)/AnimatedObject.o: $(SOURCE_DIR)/AnimatedObject.cpp $(INCLUDE_DIR)/AnimatedObject.hpp

@@ -3,12 +3,15 @@
 assets_dir=assets
 fonts_dir=$assets_dir/fonts
 ext=
+sdl_libs=
 if [ `uname -s` == "Darwin" ]; then
     echo "Configured for Darwin"
     ext=dylib
+    sdl_libs="-lsdl2 -lsdl2_image -lsdl2_ttf"
 elif [ `uname -s` == "Linux" ]; then
     echo "Configured for Linux"
     ext=so
+    sdl_libs="-lSDL2 -lSDL2_image -lSDL2_ttf"
 else
     echo "Unsupported platform"
     exit 112
@@ -69,6 +72,8 @@ output_file=make.config
 echo "# ${output_file} generate by configure script" > $output_file
 echo "EXAMPLES =$examples_list" >> $output_file
 echo "EXT=${ext}" >> $output_file
+echo "SDL_LIBS=${sdl_libs}" >> $output_file
 
 echo "export EXAMPLES" >> $output_file
 echo "export EXT" >> $output_file
+echo "export SDL_LIBS" >> $output_file
