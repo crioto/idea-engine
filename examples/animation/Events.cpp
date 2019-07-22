@@ -1,8 +1,9 @@
 #include "Events.hpp"
+#include "Engine.hpp"
 
-GameEvent::GameEvent(const std::string& id, IdeaEngine::Simulation* sim) : IdeaEngine::EventBase(id)
+GameEvent::GameEvent(const std::string& id, IdeaEngine::Engine* engine) : IdeaEngine::EventBase(id, engine)
 {
-    _sim = sim;
+    _sim = engine->simulation();
 }
 
 void GameEvent::handleKeyUp(SDL_Keycode key) 

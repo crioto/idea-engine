@@ -26,7 +26,16 @@
 #include "Camera.hpp"
 #include "ResourceManager.hpp"
 
+///
+/// \namespace IdeaEngine 
+/// \brief Main namespace of the engine
+/// 
 namespace IdeaEngine {
+
+///
+/// \class Engine
+/// \brief Main class of the engine
+///
 class Engine {
 public:
     Engine(std::vector<std::string> args);
@@ -59,23 +68,22 @@ public:
     // manager will return ResourceManager
     ResourceManager* manager();
 protected:
-    void loadFromQueue();
+    void loadFromQueue(); 
 private:
-    std::vector<std::string> _args;
-    SDL_Window* _window = NULL;
-    SDL_Renderer* _renderer = NULL;
-    Scene* _scene;
-    Event* _event;
-    Camera* _camera;
-    ResourceManager* _manager;
-    // SDL_Surface* _surface = NULL;
-    Simulation* _sim;
-    bool _running;
-    CommandInterface* _command;
-    std::shared_ptr<spdlog::logger> _log;
-    int _windowWidth;
-    int _windowHeight;
-    std::deque<Object*> _loadingQueue;
+    std::vector<std::string> _args; ///< Command line arguments provided at startup
+    SDL_Window* _window = NULL; ///< SDL Window object. Created during initialization
+    SDL_Renderer* _renderer = NULL; ///< SDL Renderer object. Created during initialization
+    Scene* _scene; ///< Top-level scene, that contains sub-scenes. See Scene class
+    Event* _event; ///< Pointer to event subsystem. See Event class
+    Camera* _camera; ///< Game camera. See Camera
+    ResourceManager* _manager; ///< Manager of game resources. See ResourceManager
+    Simulation* _sim; ///< Simulation controller. See Simulation
+    bool _running; ///< Whether engine is running or not
+    CommandInterface* _command; ///< Command-line interface for game console
+    std::shared_ptr<spdlog::logger> _log; ///< Logging subsystem
+    int _windowWidth; ///< Window width
+    int _windowHeight; ///< Window height
+    std::deque<Object*> _loadingQueue; ///< Queue of game resources to be loaded on each frame
 };
 }
 

@@ -7,6 +7,10 @@
 
 namespace IdeaEngine 
 {
+    // AnimationFilePlain represents animation brakedown from the 
+    // image
+    // First line of the file is the relative path to the image
+    // Second Line is the 
     class AnimationFilePlain : public AnimationFileBase 
     {
         public:

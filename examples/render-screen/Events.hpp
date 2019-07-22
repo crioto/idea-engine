@@ -6,7 +6,7 @@
 
 class GameEvent : public IdeaEngine::EventBase {
     public:
-        GameEvent(const std::string& id, IdeaEngine::Simulation* sim);
+        GameEvent(const std::string& id, IdeaEngine::Engine *engine);
         void handleKeyUp(SDL_Keycode key);
     private:
         IdeaEngine::Simulation* _sim;

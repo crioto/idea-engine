@@ -47,7 +47,7 @@ int main(int argc, char* argv[]) {
   engine.initialize();
 
   // Initialize event handler
-  GameEvent* ge = new GameEvent("events", engine.simulation());
+  GameEvent* ge = new GameEvent("events", &engine);
 
   auto gui = new GUI(&engine);
   gui->create();

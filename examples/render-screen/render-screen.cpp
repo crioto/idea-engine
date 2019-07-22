@@ -23,7 +23,7 @@ int main(int argc, char* argv[]) {
     engine.initialize();
     
     // Initialize event handler
-    GameEvent *ge = new GameEvent("events", engine.simulation());
+    GameEvent *ge = new GameEvent("events", &engine);
 
     engine.event()->subscribe(ge);
     return engine.run();

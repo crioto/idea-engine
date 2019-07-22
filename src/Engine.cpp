@@ -10,6 +10,12 @@
 
 namespace IdeaEngine {
 
+//! Constructor
+/**
+ * Constructor initializes logging subsystem and Simulation
+ *
+ * \param vector<string> of arguments
+ */
 Engine::Engine(std::vector<std::string> args)
 {
     _windowWidth = 1024;
@@ -32,6 +38,7 @@ Engine::Engine(std::vector<std::string> args)
     _sim = new Simulation();
 }
 
+//! Destructor
 Engine::~Engine()
 {
     _log->info("Cleaning up");
@@ -44,6 +51,13 @@ Engine::~Engine()
     SDL_Quit();
 }
 
+//! Engine initializer
+/**
+ * This method should be called explicitely after Engine object creation
+ *
+ * initialize will init SDL2, SDL2 hinting, create window and renderer
+ * Also it initializes font system (SDL) and set of essential objects
+ */
 void Engine::initialize()
 {
     _log->info("Initializing SDL");
@@ -88,9 +102,10 @@ void Engine::initialize()
     _log->info("Initialization complete");
 }
 
+//! Deinitizing of the engine
 void Engine::deinitialize() { _log->info("Deinitializing engine"); }
 
-// This is a predefined game loop
+//! Main game loop
 int Engine::run()
 {
     if (_scene == nullptr) {
@@ -126,18 +141,34 @@ int Engine::run()
 
 void Engine::enableConsole() {}
 
+//! Returns window width
+/**
+ * \return int Window width
+ */
 int Engine::getWindowWidth()
 {
     return _windowWidth;
 }
 
+//! Returns window height
+/**
+ * \return int Window height
+ */
 int Engine::getWindowHeight()
 {
     return _windowHeight;
 }
 
+//! Returns reference to SDL_Renderer
+/**
+ * \return SDL_Renderer Active Renderer
+ */
 SDL_Renderer* Engine::renderer() { return _renderer; }
 
+//! Returns reference to top-level Scene
+/*
+ * \return Scene Top Level Scene
+ */
 Scene* Engine::scene() { return _scene; }
 
 Simulation* Engine::simulation() { return _sim; }

@@ -2,7 +2,7 @@ export CC=g++
 export CXXLIBS=
 export CXXINCLUDES=
 export CXXFLAGS=-g -I $(CURDIR)/include --std=c++17 -Wall
-export LDFLAGS=$(SDL_LIBS) -g -lsdl2 -lsdl2_image -lsdl2_ttf
+export LDFLAGS=$(SDL_LIBS) -g
 export BINARY=libidea-engine
 export LIB_DIRECTORY=$(CURDIR)/lib
 # Top directory for example projects
@@ -14,28 +14,31 @@ INCLUDE_DIR=include
 CONFIGFILE=make.config
 
 OBJECT_FILES = $(BUILD_DIRECTORY)/Engine.o \
-			   $(BUILD_DIRECTORY)/Scene.o \
-			   $(BUILD_DIRECTORY)/Object.o \
-				 $(BUILD_DIRECTORY)/AnimatedObject.o \
-			   $(BUILD_DIRECTORY)/Level.o \
-			   $(BUILD_DIRECTORY)/Texture.o \
-				 $(BUILD_DIRECTORY)/Font.o \
-			   $(BUILD_DIRECTORY)/Resources.o \
-			   $(BUILD_DIRECTORY)/Event.o \
-			   $(BUILD_DIRECTORY)/EventBase.o \
-			   $(BUILD_DIRECTORY)/Simulation.o \
-				 $(BUILD_DIRECTORY)/CommandInterface.o \
-				 $(BUILD_DIRECTORY)/Command.o \
-			   $(BUILD_DIRECTORY)/Seed.o \
-				 $(BUILD_DIRECTORY)/Camera.o \
-				 $(BUILD_DIRECTORY)/ResourceManager.o \
-				 $(BUILD_DIRECTORY)/Primitives.o \
-				 $(BUILD_DIRECTORY)/Rectangle.o \
-				 $(BUILD_DIRECTORY)/Text.o
+				$(BUILD_DIRECTORY)/Scene.o \
+				$(BUILD_DIRECTORY)/Object.o \
+				$(BUILD_DIRECTORY)/AnimationFileBase.o \
+				$(BUILD_DIRECTORY)/AnimationFilePlain.o \
+				$(BUILD_DIRECTORY)/AnimatedObject.o \
+				$(BUILD_DIRECTORY)/Level.o \
+				$(BUILD_DIRECTORY)/Texture.o \
+				$(BUILD_DIRECTORY)/Font.o \
+				$(BUILD_DIRECTORY)/Resources.o \
+				$(BUILD_DIRECTORY)/Event.o \
+				$(BUILD_DIRECTORY)/EventBase.o \
+				$(BUILD_DIRECTORY)/Simulation.o \
+				$(BUILD_DIRECTORY)/CommandInterface.o \
+				$(BUILD_DIRECTORY)/Command.o \
+				$(BUILD_DIRECTORY)/Seed.o \
+				$(BUILD_DIRECTORY)/Camera.o \
+				$(BUILD_DIRECTORY)/ResourceManager.o \
+				$(BUILD_DIRECTORY)/Primitives.o \
+				$(BUILD_DIRECTORY)/Rectangle.o \
+				$(BUILD_DIRECTORY)/StringsUtil.o \
+				$(BUILD_DIRECTORY)/Text.o
 
 include $(CONFIGFILE)
 
-all: lib tools examples tests
+all: lib tools examples tests doc
 
 lib: shared static
 
@@ -46,6 +49,9 @@ static: directories
 static: $(LIB_DIRECTORY)/$(BINARY).a
 
 tools: idea-animator
+
+doc:
+	doxygen docs/Doxyfile
 
 idea-animator:
 	$(MAKE) -C ./tools/idea-animator idea-animator
@@ -65,6 +71,7 @@ directories:
 clean: examples-clean
 	$(MAKE) -C ./testsuite clean
 	$(MAKE) -C ./tools/idea-animator clean
+	-rm -rf docs/out
 	-rm -f $(LIB_DIRECTORY)/$(BINARY)*
 	-rm -f $(OBJECT_FILES)
 
